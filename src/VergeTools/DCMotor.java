@@ -26,7 +26,7 @@ public class DCMotor {
         speed = util.clamp(speed, 1);
         speed = Math.abs(speed);
         speed = limitSpeedEnable ? util.clamp(speed, limitSpeedMin, limitSpeedmax) : speed;
-        speed = mapLimitSpeedEnable ? speed * mapLimitSpeed : speed;
+        speed = mapLimitSpeedEnable ? util.clamp(speed, mapLimitSpeed) : speed;
         while (running){}
         running = true;
         MotorThread motorThread = new MotorThread(pos, speed);
@@ -63,8 +63,8 @@ public class DCMotor {
         limitSpeedEnable = true;
     }
     public void limit(double min, double max){
-        limitSpeedMin = -Math.abs(util.clamp(min, 1));
-        limitSpeedmax = Math.abs(util.clamp(max, 1));
+        limitSpeedMin = util.clamp(min, 1);
+        limitSpeedmax = util.clamp(max, 1);
         limitSpeedEnable = true;
     }
     public void limit(boolean limit){
@@ -75,6 +75,9 @@ public class DCMotor {
         mapLimitSpeedEnable = true;
         speed = Math.abs(util.clamp(speed, 1));
         mapLimitSpeed = speed;
+    }
+    public void mapLimit(double min, double max){
+
     }
     public void mapLimit(boolean enable){
         mapLimitSpeedEnable = enable;
